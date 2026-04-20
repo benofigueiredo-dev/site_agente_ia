@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suporte Inteligente | Soluções ETI</title>
+    <style>
+        /* Estilização Geral */
+        body, html {
+            margin: 0; padding: 0; height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f172a; /* Azul Marinho Escuro */
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        /* Tela de Login */
+        #login-screen {
+            text-align: center;
+            background: rgba(30, 41, 59, 0.7);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            width: 100%; max-width: 400px;
+            z-index: 10;
+        }
+
+        .logo { width: 180px; margin-bottom: 25px; }
+
+        h2 { color: #f8fafc; margin-bottom: 10px; font-weight: 400; }
+
+        input {
+            width: 100%; padding: 15px; margin: 15px 0;
+            border-radius: 10px; border: none;
+            background: #1e293b; color: white;
+            font-size: 16px; box-sizing: border-box;
+        }
+
+        button {
+            width: 100%; padding: 15px;
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            color: white; border: none; border-radius: 10px;
+            font-size: 16px; font-weight: bold; cursor: pointer;
+            transition: transform 0.2s, hover 0.2s;
+        }
+
+        button:hover { background: #3b82f6; transform: translateY(-2px); }
+
+        #error-msg { color: #ef4444; margin-top: 15px; display: none; }
+
+        /* Container do Chat (Escondido por padrão) */
+        #chat-container {
+            display: none; width: 100%; height: 100%;
+        }
+
+        iframe { width: 100%; height: 100%; border: none; }
+    </style>
+</head>
+<body>
+
+    <!-- TELA DE LOGIN -->
+    <div id="login-screen">
+        <img src="https://www.solucoes.eti.br/wp-content/uploads/2021/05/logo-solucoes-eti.png" alt="Soluções ETI" class="logo">
+        <h2>Acesso ao Suporte</h2>
+        <p style="color: #94a3b8;">Digite sua chave de acesso para falar com o Zezé.</p>
+        
+        <input type="password" id="access-key" placeholder="Chave de Acesso">
+        <button onclick="validateLogin()">Entrar no Chat</button>
+        
+        <p id="error-msg">Chave incorreta. Tente novamente.</p>
+    </div>
+
+    <!-- TELA DO CHAT -->
+    <div id="chat-container">
+        <!-- COLOQUE SUA URL DO N8N ABAIXO -->
+        <iframe src="SUA_URL_PRODUCTION_DO_N8N_AQUI" allow="microphone"></iframe>
+    </div>
+
+    <script>
+        function validateLogin() {
+            const key = document.getElementById('access-key').value;
+            const VALID_KEY = "ETI2024"; // <--- ALTERE AQUI A SUA SENHA
+
+            if (key === VALID_KEY) {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('chat-container').style.display = 'block';
+            } else {
+                const error = document.getElementById('error-msg');
+                error.style.display = 'block';
+                document.getElementById('access-key').value = '';
+            }
+        }
+
+        // Permitir login ao apertar a tecla Enter
+        document.getElementById('access-key').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') validateLogin();
+        });
+    </script>
+</body>
+</html>
+
+
