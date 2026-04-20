@@ -5,15 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Suporte Inteligente | Soluções ETI</title>
     <style>
-        /* Estilização Geral */
+        /* 1. ESTILIZAÇÃO GERAL E RESET */
         body, html {
-            margin: 0; padding: 0; height: 100%;
+            margin: 0; padding: 0; 
+            height: 100%; width: 100%;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0f172a; /* Azul Marinho Escuro */
-            display: flex; justify-content: center; align-items: center;
+            background-color: #0f172a; /* Azul Marinho Soluções ETI */
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            overflow: hidden; /* Evita barras de rolagem duplas */
         }
 
-        /* Tela de Login */
+        /* 2. REGRA PARA EXPANDIR O CHAT (DESATIVA O CENTRALIZADOR) */
+        body.chat-active {
+            display: block !important; 
+        }
+
+        /* 3. TELA DE LOGIN */
         #login-screen {
             text-align: center;
             background: rgba(30, 41, 59, 0.7);
@@ -22,12 +31,12 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.1);
-            width: 100%; max-width: 400px;
+            width: 100%; 
+            max-width: 400px;
             z-index: 10;
         }
 
         .logo { width: 180px; margin-bottom: 25px; }
-
         h2 { color: #f8fafc; margin-bottom: 10px; font-weight: 400; }
 
         input {
@@ -35,6 +44,7 @@
             border-radius: 10px; border: none;
             background: #1e293b; color: white;
             font-size: 16px; box-sizing: border-box;
+            outline: none;
         }
 
         button {
@@ -42,30 +52,40 @@
             background: linear-gradient(135deg, #2563eb, #1e40af);
             color: white; border: none; border-radius: 10px;
             font-size: 16px; font-weight: bold; cursor: pointer;
-            transition: transform 0.2s, hover 0.2s;
+            transition: transform 0.2s, background 0.2s;
         }
 
         button:hover { background: #3b82f6; transform: translateY(-2px); }
+        #error-msg { color: #ef4444; margin-top: 15px; display: none; font-size: 14px; }
 
-        #error-msg { color: #ef4444; margin-top: 15px; display: none; }
-
-        /* Container do Chat (Escondido por padrão) */
+        /* 4. CONTAINER DO CHAT (TELA CHEIA) */
         #chat-container {
-            display: none; width: 100%; height: 100%;
+            display: none; 
+            width: 100vw; 
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            background-color: #0f172a;
         }
 
-        iframe { width: 100%; height: 100%; border: none; }
+        iframe { 
+            width: 100%; 
+            height: 100%; 
+            border: none; 
+            display: block;
+        }
     </style>
 </head>
 <body>
 
     <!-- TELA DE LOGIN -->
     <div id="login-screen">
+        <!-- Certifique-se de que o arquivo img_logo.png existe no seu repositório -->
         <img src="img_logo.png" alt="Soluções ETI" class="logo">
         <h2>Acesso ao Suporte</h2>
         <p style="color: #94a3b8;">Digite sua chave de acesso para falar com o Zezé.</p>
         
-        <input type="password" id="access-key" placeholder="Chave de Acesso">
+        <input type="password" id="access-key" placeholder="Chave de Acesso" autofocus>
         <button onclick="validateLogin()">Entrar no Chat</button>
         
         <p id="error-msg">Chave incorreta. Tente novamente.</p>
@@ -73,22 +93,25 @@
 
     <!-- TELA DO CHAT -->
     <div id="chat-container">
-        <!-- COLOQUE SUA URL DO N8N ABAIXO -->
+        <!-- URL de Produção do seu n8n -->
         <iframe src="https://n8n.solucoes.eti.br/webhook/ff5f28cd-44cc-4ee1-a6f9-2cc3162dafeb/chat" allow="microphone"></iframe>
     </div>
 
     <script>
         function validateLogin() {
             const key = document.getElementById('access-key').value;
-            const VALID_KEY = "Soleti@321"; // 
+            const VALID_KEY = "Soleti@321"; 
 
             if (key === VALID_KEY) {
+                // Altera o layout para ocupar a tela toda
+                document.body.classList.add('chat-active');
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('chat-container').style.display = 'block';
             } else {
                 const error = document.getElementById('error-msg');
                 error.style.display = 'block';
                 document.getElementById('access-key').value = '';
+                document.getElementById('access-key').focus();
             }
         }
 
@@ -99,5 +122,3 @@
     </script>
 </body>
 </html>
-
-
